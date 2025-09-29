@@ -8,7 +8,6 @@ const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: "400" });
 export default function Presentes() {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [productToConfirm, setProductToConfirm] = useState<string>("");
 
@@ -68,15 +67,6 @@ export default function Presentes() {
     setShowDropdown(false);
   };
 
-  const handleProductSelect = (productName: string) => {
-    setSelectedProducts(prev => {
-      if (prev.includes(productName)) {
-        return prev.filter(p => p !== productName);
-      } else {
-        return [...prev, productName];
-      }
-    });
-  };
 
   const handleGiveGift = (productName: string) => {
     setProductToConfirm(productName);
@@ -147,7 +137,7 @@ export default function Presentes() {
                 {selectedCategory ? (
                   produtos[selectedCategory as keyof typeof produtos]?.map((produto, index) => (
                     <div key={index}>
-                      <div className={`card mb-3 ${selectedProducts.includes(produto.nome) ? 'border-success' : ''}`}>
+                      <div className="card mb-3">
                         <div className="card-body text-center">
                           <div className="mb-3" style={{ 
                             height: "200px", 
@@ -189,7 +179,7 @@ export default function Presentes() {
                       </h4>
                       {produtosCategoria.map((produto, index) => (
                         <div key={index}>
-                           <div className={`card mb-3 ${selectedProducts.includes(produto.nome) ? 'border-success' : ''}`}>
+                           <div className="card mb-3">
                              <div className="card-body text-center">
                              <h5 className="card-title">{produto.nome}</h5>
 
@@ -274,7 +264,7 @@ export default function Presentes() {
                     lineHeight: '1.6',
                     marginBottom: '0'
                   }}>
-                    Que lindo! Você quer dar <strong style={{ color: '#a82a52' }}>"{productToConfirm}"</strong> de presente para nossa casa nova?
+                    Que lindo! Você quer dar <strong style={{ color: '#a82a52' }}>&ldquo;{productToConfirm}&rdquo;</strong> de presente para nossa casa nova?
                   </p>
                   <p className={`${cormorant.className}`} style={{ 
                     fontSize: '0.9rem',
