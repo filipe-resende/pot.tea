@@ -117,9 +117,9 @@ export default function Proxima() {
                       fontSize: "clamp(14px, 2.5vw, 16px)",
                       padding: "clamp(10px, 2.5vw, 12px) clamp(20px, 4vw, 24px)",
                       minWidth: "140px",
-                      backgroundColor: status === "vai" ? "#a82a52" : "transparent",
-                      borderColor: "#a82a52",
-                      color: status === "vai" ? "white" : "#a82a52"
+                      backgroundColor: status === "vai" ? "#28a745" : "transparent",
+                      borderColor: "#28a745",
+                      color: status === "vai" ? "white" : "#28a745"
                     }}
                   >
                     {loading ? "Salvando..." : "Estarei lá!"}
@@ -133,9 +133,9 @@ export default function Proxima() {
                       fontSize: "clamp(14px, 2.5vw, 16px)",
                       padding: "clamp(10px, 2.5vw, 12px) clamp(20px, 4vw, 24px)",
                       minWidth: "140px",
-                      backgroundColor: status === "nao" ? "#a82a52" : "transparent",
-                      borderColor: "#a82a52",
-                      color: status === "nao" ? "white" : "#a82a52"
+                      backgroundColor: status === "nao" ? "#dc3545" : "transparent",
+                      borderColor: "#dc3545",
+                      color: status === "nao" ? "white" : "#dc3545"
                     }}
                   >
                     {loading ? "Salvando..." : "Não poderei ir"}

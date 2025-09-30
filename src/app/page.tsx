@@ -345,7 +345,7 @@ export default function Home() {
                       fontWeight: 600,
                     }}
                   >
-                    nov de <br/> <span className={crimson.className} style={{
+                    OUTUBRO de <br/> <span className={crimson.className} style={{
                       fontSize: "clamp(10px, 2vw, 14px)",
                       letterSpacing: "0.06em",
                       lineHeight: 1.2,

@@ -43,8 +43,8 @@ export default function Presentes() {
   const produtos = {
     cozinha: [
       { nome: "Garrafa Térmica", foto: "/img/garrafa-termica.jpg", detalhes: "Preto" },
-      { nome: "Jogo Churrasco Inox 12PC Dynamic", foto: "/img/jogo-churrasco-inox-12pc-dynamic.jpg", detalhes: "Aço inox" },
-      { nome: "Conjunto 6 Potes Herméticos Block Mini Temperos Especiarias Cor Transparente", foto: "/img/potes-herméticos-mini-temperos-especiarias-transparente.jpg", detalhes: "Transparente" },
+      { nome: "Jogo Talheres de Churrasco", foto: "/img/jogo-churrasco-inox-12pc-dynamic.jpg", detalhes: "Aço inox" },
+      { nome: "Mini Potes Herméticos para Temperos e Especiarias", foto: "/img/potes-herméticos-mini-temperos-especiarias-transparente.jpg", detalhes: "Transparente" },
       { nome: "Faqueiro", foto: "/img/faqueiro.jpg", detalhes: "Aço inox" },
       { nome: "Aparelho de Jantar", foto: "/img/aparelho-jantar.jpg", detalhes: "Cerâmica Branca" },
       { nome: "Panela de Pressão", foto: "/img/panela-pressão.jpg", detalhes: "Preto" },
@@ -66,9 +66,11 @@ export default function Presentes() {
     quarto: [
       { nome: "Edredon de Casal", foto: "/img/edredom-casal.jpg", detalhes: "Branco" },
       { nome: "Ferro de Passar", foto: "/img/ferro-passar.jpg", detalhes: "Branco" },
-      { nome: "Persiana Romana Blackout Branca", foto: "/img/cortina-rolo-blackout-branca.jpg", detalhes: "Branco" }
+      { nome: "Persiana Romana Blackout Branca", foto: "/img/cortina-rolo-blackout-branca.jpg", detalhes: "Branco" },
+      { nome: "Varal de Chão", foto: "/img/varal-chão.jpg", detalhes: "Preto" }
     ],
     lavanderia: [
+      { nome: "Edredon de Casal", foto: "/img/edredom-casal.jpg", detalhes: "Branco" },
       { nome: "Lixeira", foto: "/img/lixeira-inox.jpg", detalhes: "Aço inox" },
       { nome: "Aspirador de Pó", foto: "/img/aspirador.jpg", detalhes: "Preto" },
       { nome: "Varal de Chão", foto: "/img/varal-chão.jpg", detalhes: "Preto" },
