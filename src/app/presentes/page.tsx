@@ -18,6 +18,21 @@ export default function Presentes() {
   const [categoryToConfirm, setCategoryToConfirm] = useState<string>("");
   const { userName } = useUserName();
 
+  // Função para converter nome da cor em código CSS
+  const getColorCode = (colorName: string) => {
+    const colorMap: { [key: string]: string } = {
+      "Aço inox": "#C0C0C0",
+      "Branco": "#FFFFFF",
+      "Preto": "#000000",
+      "Transparente": "#F0F8FF",
+      "Prata": "#C0C0C0",
+      "Natural": "#D2B48C",
+      "Azul": "#007BFF",
+      "Porcelana": "#FFFFFF"
+    };
+    return colorMap[colorName] || "#CCCCCC";
+  };
+
   const categories = [
     { id: "cozinha", name: "Cozinha" },
     { id: "quarto", name: "Quarto" },
@@ -26,39 +41,38 @@ export default function Presentes() {
 
   const produtos = {
     cozinha: [
-      { nome: "Garrafa Térmica", foto: "/img/garrafa-termica.jpg" },
-      { nome: "Faqueiro", foto: "/img/faqueiro.jpg" },
-      { nome: "Aparelho de Jantar", foto: "/img/aparelho-jantar.jpg" },
-      { nome: "Panela de Pressão", foto: "/img/panela-pressão.jpg" },
-      { nome: "Jogo Panela", foto: "/img/jogo-panela.jpg" },
-      { nome: "Kit Frigideira", foto: "/img/kit-frigideira-anteaderente.jpg" },
-      { nome: "Cooktop", foto: "/img/cooktop.jpg" },
-      { nome: "Air Fryer", foto: "/img/air-fryer.jpg" },
-      { nome: "Chaleira Elétrica", foto: "/img/chaleira-eletrica.jpg" },
-      { nome: "Mixer", foto: "/img/mixer.jpg" },
-      { nome: "Jogo de Facas", foto: "/img/jogo-facas.jpg" },
-      { nome: "Forno Elétrico", foto: "/img/kit-Bowl-Inox .jpg" },
-      { nome: "Sanduicheira", foto: "/img/sanduicheira.jpg" },
-      { nome: "Liquidificador", foto: "/img/liquidificador.jpg" },
-      { nome: "Frigobar", foto: "/img/frigobar.png" },
-      { nome: "Lixeira", foto: "/img/lixeira-inox.jpg" },
-      { nome: "Lixeira", foto: "/img/lixeira-inox.jpg" },
-      { nome: "Kit Cumbucas de Porcelana", foto: "/img/kit-cumbucas-ceramica.jpg" },
-      { nome: "Jogo Assadeiras de Vidro com Tampa", foto: "/img/kit-assadeiras-vidro-com tampa.jpg" }
+      { nome: "Garrafa Térmica", foto: "/img/garrafa-termica.jpg", detalhes: "Preto" },
+      { nome: "Faqueiro", foto: "/img/faqueiro.jpg", detalhes: "Aço inox" },
+      { nome: "Aparelho de Jantar", foto: "/img/aparelho-jantar.jpg", detalhes: "Porcelana" },
+      { nome: "Panela de Pressão", foto: "/img/panela-pressão.jpg", detalhes: "Preto" },
+      { nome: "Jogo de Panela", foto: "/img/jogo-panela.jpg", detalhes: "Aço inox	" },
+      { nome: "Kit de Frigideira", foto: "/img/kit-frigideira-anteaderente.jpg", detalhes: "Preto" },
+      { nome: "Cooktop", foto: "/img/cooktop.jpg", detalhes: "Preto" },
+      { nome: "Air Fryer", foto: "/img/air-fryer.jpg", detalhes: "Preto" },
+      { nome: "Chaleira Elétrica", foto: "/img/chaleira-eletrica.jpg", detalhes: "Aço inox" },
+      { nome: "Mixer", foto: "/img/mixer.jpg", detalhes: "Preto" },
+      { nome: "Jogo de Facas", foto: "/img/jogo-facas.jpg", detalhes: "Aço inox" },
+      { nome: "Forno Elétrico", foto: "/img/forno-eletrico.jpg", detalhes: "Aço inox" },
+      { nome: "Sanduicheira", foto: "/img/sanduicheira.jpg", detalhes: "Preto" },
+      { nome: "Liquidificador", foto: "/img/liquidificador.jpg", detalhes: "Preto" },
+      { nome: "Frigobar", foto: "/img/frigobar.png", detalhes: "Preto" },
+      { nome: "Lixeira", foto: "/img/lixeira-inox.jpg", detalhes: "Aço inox" },
+      { nome: "Kit de Cumbucas de Porcelana", foto: "/img/kit-cumbucas-ceramica.jpg", detalhes: "Porcelana" },
+      { nome: "Jogo de Assadeiras de Vidro com Tampa", foto: "/img/kit-assadeiras-vidro-com tampa.jpg", detalhes: "Transparente" }
     ],
     quarto: [
-      { nome: "Edredon de Casal", foto: "/img/edredom-casal.jpg" },
-      { nome: "Ferro de Passar", foto: "/img/ferro-passar.jpg" },
-      { nome: "Persiana Romana Blackout Branca", foto: "/img/cortina-rolo blackout-branca.jpg" }
+      { nome: "Edredon de Casal", foto: "/img/edredom-casal.jpg", detalhes: "Branco" },
+      { nome: "Ferro de Passar", foto: "/img/ferro-passar.jpg", detalhes: "Branco" },
+      { nome: "Persiana Romana Blackout Branca", foto: "/img/cortina-rolo blackout-branca.jpg", detalhes: "Branco" }
     ],
     lavanderia: [
-      { nome: "Aspirador de Pó", foto: "/img/aspirador.jpg" },
-      { nome: "Varal de Chão", foto: "/img/varal-chão.jpg" },
-      { nome: "Escada", foto: "/img/escada.jpg" },
-      { nome: "Cesto de Roupa", foto: "/img/cesto-roupa.jpg" },
-      { nome: "Persiana Romana Translúcida Branca", foto: "/img/cortina-rolo blackout-branca.jpg" },
-      { nome: "Passadeira de Roupas a Vapor", foto: "/img/ferro-passar.jpg" },
-      { nome: "Mop", foto: "/img/mop.jpg" }
+      { nome: "Lixeira", foto: "/img/lixeira-inox.jpg", detalhes: "Aço inox" },
+      { nome: "Aspirador de Pó", foto: "/img/aspirador.jpg", detalhes: "Preto" },
+      { nome: "Varal de Chão", foto: "/img/varal-chão.jpg", detalhes: "Preto" },
+      { nome: "Escada", foto: "/img/escada.jpg", detalhes: "Prata" },
+      { nome: "Cesto de Roupa", foto: "/img/cesto-roupa.jpg", detalhes: "Natural" },
+      { nome: "Passadeira de Roupas a Vapor", foto: "/img/passadeira-roupa.jpg", detalhes: "Branco" },
+      { nome: "Mop", foto: "/img/mop.jpg", detalhes: "Azul" }
     ]
   };
 
@@ -227,6 +241,26 @@ export default function Presentes() {
                               }}
                             />
                           </div>
+                          
+                          {/* Campo de Detalhes */}
+                          <div className="mb-3 d-flex align-items-center justify-content-center" style={{
+                            fontSize: "clamp(12px, 1.8vw, 14px)",
+                            color: "#6c757d",
+                            lineHeight: "1.4",
+                            textAlign: "center",
+                            gap: "8px"
+                          }}>
+                            <div style={{
+                              width: "12px",
+                              height: "12px",
+                              borderRadius: "50%",
+                              backgroundColor: getColorCode(produto.detalhes),
+                              border: "1px solid #ddd",
+                              flexShrink: 0
+                            }}></div>
+                            Cor: {produto.detalhes}
+                          </div>
+                          
                           <button 
                             className={`btn ${givenGifts.has(produto.nome) ? 'btn-success' : 'btn-outline-primary'}`}
                             onClick={() => handleGiveGift(produto.nome, selectedCategory)}
@@ -304,6 +338,26 @@ export default function Presentes() {
                                    }}
                                  />
                                </div>
+                               
+                               {/* Campo de Detalhes */}
+                               <div className="mb-3 d-flex align-items-center justify-content-center" style={{
+                                 fontSize: "clamp(12px, 1.8vw, 14px)",
+                                 color: "#6c757d",
+                                 lineHeight: "1.4",
+                                 textAlign: "center",
+                                 gap: "8px"
+                               }}>
+                                 <div style={{
+                                   width: "12px",
+                                   height: "12px",
+                                   borderRadius: "50%",
+                                   backgroundColor: getColorCode(produto.detalhes),
+                                   border: "1px solid #ddd",
+                                   flexShrink: 0
+                                 }}></div>
+                                 Cor: {produto.detalhes}
+                               </div>
+                               
                                <button 
                                  className={`btn ${givenGifts.has(produto.nome) ? 'btn-success' : 'btn-outline-primary'}`}
                                  onClick={() => handleGiveGift(produto.nome, categoriaId)}
