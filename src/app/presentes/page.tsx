@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Cormorant_Garamond } from "next/font/google";
-import { markGiftAsGiven, getGivenGifts, isGiftAlreadyGiven, Gift } from "@/lib/gifts";
+import { markGiftAsGiven, getGivenGifts } from "@/lib/gifts";
 import { useUserName } from "@/lib/useUserName";
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: "400" });

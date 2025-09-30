@@ -2,14 +2,18 @@
 import { useState, useEffect } from "react";
 import { Cormorant_Garamond } from "next/font/google";
 import { Gift } from "@/lib/gifts";
-import { Guest, getAttendingGuests, getConfirmedGuests } from "@/lib/guests";
+import { Guest, getConfirmedGuests } from "@/lib/guests";
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: "400" });
 
 export default function AdminPage() {
   const [gifts, setGifts] = useState<Gift[]>([]);
   const [guests, setGuests] = useState<Guest[]>([]);
-  const [statistics, setStatistics] = useState<any>(null);
+  const [statistics, setStatistics] = useState<{
+    totalGiven: number;
+    byCategory: Record<string, number>;
+    recentGifts: Gift[];
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'gifts' | 'guests'>('gifts');
@@ -286,10 +290,10 @@ export default function AdminPage() {
                                   } else if (typeof gift.givenAt === 'object' && 'seconds' in gift.givenAt) {
                                     // Serialized timestamp from API
                                     date = new Date(gift.givenAt.seconds * 1000);
-                                  } else {
-                                    // Fallback for other date formats
-                                    date = new Date(gift.givenAt as any);
-                                  }
+                                      } else {
+                                        // Fallback for other date formats
+                                        date = new Date(gift.givenAt as string | number);
+                                      }
                                   return date.toLocaleDateString('pt-BR', {
                                     day: '2-digit',
                                     month: '2-digit',
@@ -412,10 +416,10 @@ export default function AdminPage() {
                                         date = guest.confirmedAt.toDate();
                                       } else if (typeof guest.confirmedAt === 'object' && 'seconds' in guest.confirmedAt) {
                                         // Serialized timestamp from API
-                                        date = new Date((guest.confirmedAt as any).seconds * 1000);
+                                        date = new Date((guest.confirmedAt as { seconds: number; nanoseconds: number }).seconds * 1000);
                                       } else {
                                         // Fallback for other date formats
-                                        date = new Date(guest.confirmedAt as any);
+                                        date = new Date(guest.confirmedAt as string | number);
                                       }
                                       return date.toLocaleDateString('pt-BR', {
                                         day: '2-digit',
