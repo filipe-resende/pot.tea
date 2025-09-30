@@ -74,9 +74,6 @@ export default function Proxima() {
                   E nada melhor do que comemorar esse momento com um bom tropeiro mineiro
                   — afinal, tropeiro e casa nova combinam perfeitamente!
                 </p>
-                <p className="mb-3">
-                  A lista de presentes estará disponível aqui mesmo.
-                </p>
                 <p className="mb-4">
                   Confirme sua presença e venha compartilhar esse dia especial comigo!
                   <br />
@@ -85,6 +82,12 @@ export default function Proxima() {
               </div>
 
               <div className="mx-auto" style={{ maxWidth: "100%", width: "100%" }}>
+                <label className="form-label fw-bold mb-2" style={{
+                  fontSize: "clamp(14px, 2.5vw, 16px)",
+                  color: "#523d47"
+                }}>
+                  Digite seu nome
+                </label>
                 <div className="input-group mb-3 mb-md-4">
                   <span className="input-group-text" id="addon-nome" style={{
                     fontSize: "clamp(12px, 2vw, 14px)",
@@ -113,7 +116,10 @@ export default function Proxima() {
                     style={{
                       fontSize: "clamp(14px, 2.5vw, 16px)",
                       padding: "clamp(10px, 2.5vw, 12px) clamp(20px, 4vw, 24px)",
-                      minWidth: "140px"
+                      minWidth: "140px",
+                      backgroundColor: status === "vai" ? "#a82a52" : "transparent",
+                      borderColor: "#a82a52",
+                      color: status === "vai" ? "white" : "#a82a52"
                     }}
                   >
                     {loading ? "Salvando..." : "Estarei lá!"}
@@ -126,7 +132,10 @@ export default function Proxima() {
                     style={{
                       fontSize: "clamp(14px, 2.5vw, 16px)",
                       padding: "clamp(10px, 2.5vw, 12px) clamp(20px, 4vw, 24px)",
-                      minWidth: "140px"
+                      minWidth: "140px",
+                      backgroundColor: status === "nao" ? "#a82a52" : "transparent",
+                      borderColor: "#a82a52",
+                      color: status === "nao" ? "white" : "#a82a52"
                     }}
                   >
                     {loading ? "Salvando..." : "Não poderei ir"}
@@ -144,10 +153,25 @@ export default function Proxima() {
                 )}
 
                 <div className="mt-4 mt-md-5">
-                  <Link href="/presentes" className="link-secondary" style={{
-                    fontSize: "clamp(14px, 2.5vw, 16px)",
+                  <p 
+                    className={`mb-3 ${cormorant.className}`}
+                    style={{
+                      fontSize: "clamp(12px, 2vw, 14px)",
+                      color: "#523d47",
+                      fontStyle: "italic",
+                      opacity: 0.8
+                    }}
+                  >
+                    A lista de presentes estará disponível aqui mesmo.
+                  </p>
+                  <Link href="/presentes" style={{
+                    fontSize: "clamp(16px, 3vw, 20px)",
                     textDecoration: "underline",
-                    textUnderlineOffset: "2px"
+                    textDecorationColor: "#a82a52",
+                    textUnderlineOffset: "2px",
+                    color: "#a82a52",
+                    fontWeight: "600",
+                    textDecorationThickness: "2px"
                   }}>
                     Ver sugestões de presentes →
                   </Link>

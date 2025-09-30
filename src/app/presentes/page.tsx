@@ -28,7 +28,8 @@ export default function Presentes() {
       "Prata": "#C0C0C0",
       "Natural": "#D2B48C",
       "Azul": "#007BFF",
-      "Porcelana": "#FFFFFF"
+      "Porcelana": "#FFFFFF",
+      "Cerâmica Branca": "#FFFFFF"
     };
     return colorMap[colorName] || "#CCCCCC";
   };
@@ -42,8 +43,10 @@ export default function Presentes() {
   const produtos = {
     cozinha: [
       { nome: "Garrafa Térmica", foto: "/img/garrafa-termica.jpg", detalhes: "Preto" },
+      { nome: "Jogo Churrasco Inox 12PC Dynamic", foto: "/img/jogo-churrasco-inox-12pc-dynamic.jpg", detalhes: "Aço inox" },
+      { nome: "Conjunto 6 Potes Herméticos Block Mini Temperos Especiarias Cor Transparente", foto: "/img/potes-herméticos-mini-temperos-especiarias-transparente.jpg", detalhes: "Transparente" },
       { nome: "Faqueiro", foto: "/img/faqueiro.jpg", detalhes: "Aço inox" },
-      { nome: "Aparelho de Jantar", foto: "/img/aparelho-jantar.jpg", detalhes: "Porcelana" },
+      { nome: "Aparelho de Jantar", foto: "/img/aparelho-jantar.jpg", detalhes: "Cerâmica Branca" },
       { nome: "Panela de Pressão", foto: "/img/panela-pressão.jpg", detalhes: "Preto" },
       { nome: "Jogo de Panela", foto: "/img/jogo-panela.jpg", detalhes: "Aço inox	" },
       { nome: "Kit de Frigideira", foto: "/img/kit-frigideira-anteaderente.jpg", detalhes: "Preto" },
@@ -57,13 +60,13 @@ export default function Presentes() {
       { nome: "Liquidificador", foto: "/img/liquidificador.jpg", detalhes: "Preto" },
       { nome: "Frigobar", foto: "/img/frigobar.png", detalhes: "Preto" },
       { nome: "Lixeira", foto: "/img/lixeira-inox.jpg", detalhes: "Aço inox" },
-      { nome: "Kit de Cumbucas de Porcelana", foto: "/img/kit-cumbucas-ceramica.jpg", detalhes: "Porcelana" },
+      { nome: "Kit de Cumbucas de Porcelana", foto: "/img/kit-cumbucas-ceramica.jpg", detalhes: "Cerâmica Branca" },
       { nome: "Jogo de Assadeiras de Vidro com Tampa", foto: "/img/kit-assadeiras-vidro-com tampa.jpg", detalhes: "Transparente" }
     ],
     quarto: [
       { nome: "Edredon de Casal", foto: "/img/edredom-casal.jpg", detalhes: "Branco" },
       { nome: "Ferro de Passar", foto: "/img/ferro-passar.jpg", detalhes: "Branco" },
-      { nome: "Persiana Romana Blackout Branca", foto: "/img/cortina-rolo blackout-branca.jpg", detalhes: "Branco" }
+      { nome: "Persiana Romana Blackout Branca", foto: "/img/cortina-rolo-blackout-branca.jpg", detalhes: "Branco" }
     ],
     lavanderia: [
       { nome: "Lixeira", foto: "/img/lixeira-inox.jpg", detalhes: "Aço inox" },
@@ -71,8 +74,8 @@ export default function Presentes() {
       { nome: "Varal de Chão", foto: "/img/varal-chão.jpg", detalhes: "Preto" },
       { nome: "Escada", foto: "/img/escada.jpg", detalhes: "Prata" },
       { nome: "Cesto de Roupa", foto: "/img/cesto-roupa.jpg", detalhes: "Natural" },
-      { nome: "Passadeira de Roupas a Vapor", foto: "/img/passadeira-roupa.jpg", detalhes: "Branco" },
-      { nome: "Mop", foto: "/img/mop.jpg", detalhes: "Azul" }
+      { nome: "Passadeira de Roupas a Vapor", foto: "/img/passadeira-roupa.jpg", detalhes: "Preto" },
+      { nome: "Mop", foto: "/img/mop.jpg", detalhes: "Preto" }
     ]
   };
 
