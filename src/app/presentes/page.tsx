@@ -1,7 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Cormorant_Garamond } from "next/font/google";
+import { markGiftAsGiven, getGivenGifts, isGiftAlreadyGiven, Gift } from "@/lib/gifts";
+import { useUserName } from "@/lib/useUserName";
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: "400" });
 
@@ -10,57 +13,70 @@ export default function Presentes() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [productToConfirm, setProductToConfirm] = useState<string>("");
+  const [givenGifts, setGivenGifts] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(false);
+  const [categoryToConfirm, setCategoryToConfirm] = useState<string>("");
+  const { userName } = useUserName();
 
   const categories = [
     { id: "cozinha", name: "Cozinha" },
-    { id: "sala", name: "Sala" },
     { id: "quarto", name: "Quarto" },
-    { id: "banheiro", name: "Banheiro" },
     { id: "lavanderia", name: "Lavanderia" }
   ];
 
   const produtos = {
     cozinha: [
-      { nome: "Garrafa Térmica", foto: "[Foto do produto]" },
-      { nome: "Faqueiro", foto: "[Foto do produto]" },
-      { nome: "Aparelho de Jantar", foto: "[Foto do produto]" },
-      { nome: "Panela de Pressão", foto: "[Foto do produto]" },
-      { nome: "Jogo Panela", foto: "[Foto do produto]" },
-      { nome: "Frigideira", foto: "[Foto do produto]" },
-      { nome: "Cooktop", foto: "[Foto do produto]" },
-      { nome: "Air Fryer", foto: "[Foto do produto]" },
-      { nome: "Chaleira Elétrica", foto: "[Foto do produto]" },
-      { nome: "Mixer", foto: "[Foto do produto]" },
-      { nome: "Jogo de Facas", foto: "[Foto do produto]" },
-      { nome: "Geladeira", foto: "[Foto do produto]" },
-      { nome: "Forno Elétrico", foto: "[Foto do produto]" },
-      { nome: "Sanduicheira", foto: "[Foto do produto]" },
-      { nome: "Liquidificador", foto: "[Foto do produto]" },
-      { nome: "Frigobar", foto: "[Foto do produto]" },
-      { nome: "2x Lixeira", foto: "[Foto do produto]" },
-      { nome: "2x Faqueiro", foto: "[Foto do produto]" },
-      { nome: "Kit Cumbucas de Porcelana", foto: "[Foto do produto]" },
-      { nome: "Jogo Assadeiras de Vidro com Tampa", foto: "[Foto do produto]" }
-    ],
-    sala: [
-      { nome: "Mesa de Centro", foto: "[Foto do produto]" }
+      { nome: "Garrafa Térmica", foto: "/img/garrafa-termica.jpg" },
+      { nome: "Faqueiro", foto: "/img/faqueiro.jpg" },
+      { nome: "Aparelho de Jantar", foto: "/img/aparelho-jantar.jpg" },
+      { nome: "Panela de Pressão", foto: "/img/panela-pressão.jpg" },
+      { nome: "Jogo Panela", foto: "/img/jogo-panela.jpg" },
+      { nome: "Kit Frigideira", foto: "/img/kit-frigideira-anteaderente.jpg" },
+      { nome: "Cooktop", foto: "/img/cooktop.jpg" },
+      { nome: "Air Fryer", foto: "/img/air-fryer.jpg" },
+      { nome: "Chaleira Elétrica", foto: "/img/chaleira-eletrica.jpg" },
+      { nome: "Mixer", foto: "/img/mixer.jpg" },
+      { nome: "Jogo de Facas", foto: "/img/jogo-facas.jpg" },
+      { nome: "Forno Elétrico", foto: "/img/kit-Bowl-Inox .jpg" },
+      { nome: "Sanduicheira", foto: "/img/sanduicheira.jpg" },
+      { nome: "Liquidificador", foto: "/img/liquidificador.jpg" },
+      { nome: "Frigobar", foto: "/img/frigobar.png" },
+      { nome: "Lixeira", foto: "/img/lixeira-inox.jpg" },
+      { nome: "Lixeira", foto: "/img/lixeira-inox.jpg" },
+      { nome: "Kit Cumbucas de Porcelana", foto: "/img/kit-cumbucas-ceramica.jpg" },
+      { nome: "Jogo Assadeiras de Vidro com Tampa", foto: "/img/kit-assadeiras-vidro-com tampa.jpg" }
     ],
     quarto: [
-      { nome: "Edredon", foto: "[Foto do produto]" },
-      { nome: "Ferro de Passar", foto: "[Foto do produto]" }
-    ],
-    banheiro: [
-      { nome: "Cesto de Roupa", foto: "[Foto do produto]" },
-      { nome: "Kit de Banheiro", foto: "[Foto do produto]" }
+      { nome: "Edredon de Casal", foto: "/img/edredom-casal.jpg" },
+      { nome: "Ferro de Passar", foto: "/img/ferro-passar.jpg" },
+      { nome: "Persiana Romana Blackout Branca", foto: "/img/cortina-rolo blackout-branca.jpg" }
     ],
     lavanderia: [
-      { nome: "Aspirador de Pó", foto: "[Foto do produto]" },
-      { nome: "Varal de Chão", foto: "[Foto do produto]" },
-      { nome: "Máquina de Lavar", foto: "[Foto do produto]" },
-      { nome: "Escada", foto: "[Foto do produto]" },
-      { nome: "Mop", foto: "[Foto do produto]" }
+      { nome: "Aspirador de Pó", foto: "/img/aspirador.jpg" },
+      { nome: "Varal de Chão", foto: "/img/varal-chão.jpg" },
+      { nome: "Escada", foto: "/img/escada.jpg" },
+      { nome: "Cesto de Roupa", foto: "/img/cesto-roupa.jpg" },
+      { nome: "Persiana Romana Translúcida Branca", foto: "/img/cortina-rolo blackout-branca.jpg" },
+      { nome: "Passadeira de Roupas a Vapor", foto: "/img/ferro-passar.jpg" },
+      { nome: "Mop", foto: "/img/mop.jpg" }
     ]
   };
+
+  // Carregar presentes já dados ao montar o componente
+  useEffect(() => {
+    loadGivenGifts();
+  }, []);
+
+  const loadGivenGifts = async () => {
+    try {
+      const gifts = await getGivenGifts();
+      const giftNames = new Set(gifts.map(gift => gift.name));
+      setGivenGifts(giftNames);
+    } catch (error) {
+      console.error('Erro ao carregar presentes dados:', error);
+    }
+  };
+
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
@@ -68,28 +84,75 @@ export default function Presentes() {
   };
 
 
-  const handleGiveGift = (productName: string) => {
+  const handleGiveGift = (productName: string, category: string) => {
+    if (givenGifts.has(productName)) {
+      alert("Este presente já foi dado por alguém!");
+      return;
+    }
     setProductToConfirm(productName);
+    setCategoryToConfirm(category);
     setShowModal(true);
   };
 
-  const confirmGift = () => {
-    alert(`Obrigado! Você confirmou que vai dar "${productToConfirm}" de presente!\n\nSua escolha foi registrada!`);
-    setShowModal(false);
-    setProductToConfirm("");
+  const confirmGift = async () => {
+    if (!productToConfirm || !categoryToConfirm) return;
+    
+    setLoading(true);
+    try {
+      // Usar o nome salvo ou "Anônimo" como fallback
+      const giverName = userName || "Anônimo";
+      
+      await markGiftAsGiven(productToConfirm, categoryToConfirm, giverName);
+      
+      // Atualizar a lista local de presentes dados
+      setGivenGifts(prev => new Set([...prev, productToConfirm]));
+      
+      alert(`Obrigado, ${giverName}! Você confirmou que vai dar "${productToConfirm}" de presente!\n\nSua escolha foi registrada!`);
+      setShowModal(false);
+      setProductToConfirm("");
+      setCategoryToConfirm("");
+    } catch (error) {
+      console.error('Erro ao confirmar presente:', error);
+      alert('Erro ao registrar o presente. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const cancelGift = () => {
     setShowModal(false);
     setProductToConfirm("");
+    setCategoryToConfirm("");
   };
 
   return (
-    <div className="min-vh-100 d-flex flex-column py-4">
+    <div className="min-vh-100 d-flex flex-column py-4" style={{
+      background: 'linear-gradient(135deg, #faf8f3 0%, #f7f4ed 50%, #f3f0e7 100%)',
+      position: 'relative'
+    }}>
       <main className="container flex-grow-1 d-flex flex-column">
         <div className="row justify-content-center flex-grow-1">
           <div className="col-12 col-md-10 col-lg-8 d-flex flex-column">
-            <section className={`text-center p-4 p-sm-5 ${cormorant.className} flex-grow-1 d-flex flex-column`}>
+            {/* Container da folha com efeito de elevação */}
+            <div style={{
+              background: '#fdfbf7',
+              borderRadius: '16px',
+              boxShadow: `
+                0 0 0 1px rgba(168, 42, 82, 0.03),
+                0 2px 12px rgba(168, 42, 82, 0.05),
+                0 4px 24px rgba(82, 61, 71, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.98)
+              `,
+              position: 'relative',
+              overflow: 'hidden',
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              marginTop: '20px',
+              marginBottom: '20px',
+              transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}>
+              <section className={`text-center p-4 p-sm-5 ${cormorant.className} flex-grow-1 d-flex flex-column`}>
               <h1 className="mb-4" style={{ lineHeight: 1.2 }}>
                 Lista de Presentes
               </h1>
@@ -108,7 +171,6 @@ export default function Presentes() {
                     onClick={() => setShowDropdown(!showDropdown)}
                   >
                     {selectedCategory ? categories.find(c => c.id === selectedCategory)?.name : "Selecione uma categoria"}
-                  </button>
                     {showDropdown && (
                       <div className="dropdown-menu show" style={{ 
                         position: "absolute", 
@@ -130,6 +192,7 @@ export default function Presentes() {
                         ))}
                       </div>
                     )}
+                  </button>
                 </div>
               </div>
 
@@ -139,29 +202,64 @@ export default function Presentes() {
                     <div key={index}>
                       <div className="card mb-3">
                         <div className="card-body text-center">
+                          <h5 className="card-title">{produto.nome}</h5>
+
                           <div className="mb-3" style={{ 
                             height: "200px", 
-                            backgroundColor: "#f8f9fa", 
+                            backgroundColor: "#ffffff", 
                             display: "flex", 
                             alignItems: "center", 
-                            justifyItems: "center", 
                             justifyContent: "center", 
-                            borderRadius: "8px" ,
+                            borderRadius: "12px",
+                            overflow: "hidden",
+                            border: "1px solid #e9ecef",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
                           }}>
-                            <span style={{ color: "#6c757d" }}>{produto.foto}</span>
+                            <Image
+                              src={produto.foto}
+                              alt={produto.nome}
+                              width={300}
+                              height={200}
+                              style={{
+                                objectFit: "contain",
+                                width: "100%",
+                                height: "100%"
+                              }}
+                            />
                           </div>
-                          <h5 className="card-title">{produto.nome}</h5>
                           <button 
-                            className="btn btn-success btn-sm"
-                            onClick={() => handleGiveGift(produto.nome)}
+                            className={`btn ${givenGifts.has(produto.nome) ? 'btn-success' : 'btn-outline-primary'}`}
+                            onClick={() => handleGiveGift(produto.nome, selectedCategory)}
+                            disabled={givenGifts.has(produto.nome) || loading}
                             style={{
-                              backgroundColor: '#a82a52',
-                              borderColor: '#a82a52',
-                              borderRadius: '8px',
-                              fontWeight: '500'
+                              fontSize: "clamp(12px, 2vw, 14px)",
+                              fontWeight: "500",
+                              borderColor: givenGifts.has(produto.nome) ? "#28a745" : "#a82a52",
+                              color: givenGifts.has(produto.nome) ? "white" : "#a82a52",
+                              backgroundColor: givenGifts.has(produto.nome) ? "#28a745" : "transparent",
+                              borderRadius: "6px",
+                              padding: "clamp(6px, 1.5vw, 10px) clamp(12px, 3vw, 20px)",
+                              transition: "all 0.3s ease",
+                              opacity: givenGifts.has(produto.nome) ? 0.7 : 1
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!givenGifts.has(produto.nome) && !loading) {
+                                e.currentTarget.style.backgroundColor = "#a82a52";
+                                e.currentTarget.style.color = "white";
+                                e.currentTarget.style.transform = "translateY(-1px)";
+                                e.currentTarget.style.boxShadow = "0 3px 10px rgba(168, 42, 82, 0.2)";
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!givenGifts.has(produto.nome) && !loading) {
+                                e.currentTarget.style.backgroundColor = "transparent";
+                                e.currentTarget.style.color = "#a82a52";
+                                e.currentTarget.style.transform = "translateY(0)";
+                                e.currentTarget.style.boxShadow = "none";
+                              }
                             }}
                           >
-                            Presentear!
+                            {givenGifts.has(produto.nome) ? "✓ Já foi dado!" : "Presentear!"}
                           </button>
                         </div>
                       </div>
@@ -185,26 +283,60 @@ export default function Presentes() {
 
                                <div className="mb-3" style={{ 
                                  height: "200px", 
-                                 backgroundColor: "#f8f9fa", 
+                                 backgroundColor: "#ffffff", 
                                  display: "flex", 
                                  alignItems: "center", 
-                                 justifyItems: "center", 
                                  justifyContent: "center", 
-                                 borderRadius: "8px" ,
+                                 borderRadius: "12px",
+                                 overflow: "hidden",
+                                 border: "1px solid #e9ecef",
+                                 boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
                                }}>
-                                 <span style={{ color: "#6c757d" }}>{produto.foto}</span>
+                                 <Image
+                                   src={produto.foto}
+                                   alt={produto.nome}
+                                   width={300}
+                                   height={200}
+                                   style={{
+                                     objectFit: "contain",
+                                     width: "100%",
+                                     height: "100%"
+                                   }}
+                                 />
                                </div>
                                <button 
-                                 className="btn btn-success btn-sm"
-                                 onClick={() => handleGiveGift(produto.nome)}
+                                 className={`btn ${givenGifts.has(produto.nome) ? 'btn-success' : 'btn-outline-primary'}`}
+                                 onClick={() => handleGiveGift(produto.nome, categoriaId)}
+                                 disabled={givenGifts.has(produto.nome) || loading}
                                  style={{
-                                   backgroundColor: '#a82a52',
-                                   borderColor: '#a82a52',
-                                   borderRadius: '8px',
-                                   fontWeight: '500'
+                                   fontSize: "clamp(12px, 2vw, 14px)",
+                                   fontWeight: "500",
+                                   borderColor: givenGifts.has(produto.nome) ? "#28a745" : "#a82a52",
+                                   color: givenGifts.has(produto.nome) ? "white" : "#a82a52",
+                                   backgroundColor: givenGifts.has(produto.nome) ? "#28a745" : "transparent",
+                                   borderRadius: "6px",
+                                   padding: "clamp(6px, 1.5vw, 10px) clamp(12px, 3vw, 20px)",
+                                   transition: "all 0.3s ease",
+                                   opacity: givenGifts.has(produto.nome) ? 0.7 : 1
+                                 }}
+                                 onMouseEnter={(e) => {
+                                   if (!givenGifts.has(produto.nome) && !loading) {
+                                     e.currentTarget.style.backgroundColor = "#a82a52";
+                                     e.currentTarget.style.color = "white";
+                                     e.currentTarget.style.transform = "translateY(-1px)";
+                                     e.currentTarget.style.boxShadow = "0 3px 10px rgba(168, 42, 82, 0.2)";
+                                   }
+                                 }}
+                                 onMouseLeave={(e) => {
+                                   if (!givenGifts.has(produto.nome) && !loading) {
+                                     e.currentTarget.style.backgroundColor = "transparent";
+                                     e.currentTarget.style.color = "#a82a52";
+                                     e.currentTarget.style.transform = "translateY(0)";
+                                     e.currentTarget.style.boxShadow = "none";
+                                   }
                                  }}
                                >
-                                 Presentear!
+                                 {givenGifts.has(produto.nome) ? "✓ Já foi dado!" : "Presentear!"}
                                </button>
                              </div>
                            </div>
@@ -223,7 +355,8 @@ export default function Presentes() {
                   ← Voltar para confirmação
                 </Link>
               </div>
-            </section>
+              </section>
+            </div>
           </div>
         </div>
       </main>
@@ -252,20 +385,15 @@ export default function Presentes() {
               </div>
               <div className="modal-body" style={{ padding: '2rem' }}>
                 <div className="text-center">
-                  <div style={{ 
-                    fontSize: '3rem', 
-                    marginBottom: '1rem' 
-                  }}>
-                    🏠✨
-                  </div>
                   <p className={`${cormorant.className}`} style={{ 
                     fontSize: '1.1rem',
                     color: '#523d47',
                     lineHeight: '1.6',
-                    marginBottom: '0'
+                    marginBottom: '1.5rem'
                   }}>
                     Que lindo! Você quer dar <strong style={{ color: '#a82a52' }}>&ldquo;{productToConfirm}&rdquo;</strong> de presente para nossa casa nova?
                   </p>
+                  
                   <p className={`${cormorant.className}`} style={{ 
                     fontSize: '0.9rem',
                     color: '#523d47',
@@ -273,7 +401,7 @@ export default function Presentes() {
                     marginTop: '1rem',
                     marginBottom: '0'
                   }}>
-                    Ficaremos muito felizes com sua escolha! 💕
+                    Ficaremos muito felizes com sua escolha!
                   </p>
                 </div>
               </div>
@@ -297,18 +425,20 @@ export default function Presentes() {
                     Talvez depois
                   </button>
                   <button 
-                    type="button" 
+                    type="button"
                     className="btn px-4 py-2"
                     onClick={confirmGift}
+                    disabled={loading}
                     style={{
-                      backgroundColor: '#a82a52',
-                      borderColor: '#a82a52',
+                      backgroundColor: loading ? '#6c757d' : '#a82a52',
+                      borderColor: loading ? '#6c757d' : '#a82a52',
                       color: 'white',
                       borderRadius: '8px',
-                      fontWeight: '600'
+                      fontWeight: '600',
+                      opacity: loading ? 0.7 : 1
                     }}
                   >
-                     Sim, vou dar!
+                    {loading ? 'Registrando...' : 'Sim, vou dar!'}
                   </button>
                 </div>
               </div>
